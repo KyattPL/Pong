@@ -1,0 +1,65 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/Ball.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/wall.png" type="Texture" id=3]
+[ext_resource path="res://scenes/Enemy.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scripts/Level.gd" type="Script" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 512.885, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 10, 289.437 )
+
+[node name="Level" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 124, 274 )
+
+[node name="Ball" parent="." instance=ExtResource( 2 )]
+position = Vector2( 510, 290 )
+
+[node name="Ceiling" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ceiling"]
+position = Vector2( 510.923, 0 )
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="Ceiling"]
+position = Vector2( 512.106, 0.840897 )
+scale = Vector2( 1.49349, 0.567539 )
+texture = ExtResource( 3 )
+
+[node name="Floor" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2( 510.923, 599.323 )
+shape = SubResource( 1 )
+
+[node name="Sprite2" type="Sprite" parent="Floor"]
+position = Vector2( 512.106, 597.877 )
+scale = Vector2( 1.49349, 0.567539 )
+texture = ExtResource( 3 )
+
+[node name="Enemy" parent="." instance=ExtResource( 4 )]
+position = Vector2( 893.032, 275.814 )
+
+[node name="PlayerGoal" type="Area2D" parent="."]
+position = Vector2( 0, 282.541 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerGoal"]
+position = Vector2( 11.7726, 16.8179 )
+shape = SubResource( 2 )
+
+[node name="EnemyGoal" type="Area2D" parent="."]
+position = Vector2( 0, 3.36359 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="EnemyGoal"]
+position = Vector2( 1014.12, 295.996 )
+shape = SubResource( 2 )
+[connection signal="start_game" from="." to="Ball" method="_on_Level_start_game"]
+[connection signal="start_game" from="." to="Player" method="_on_Level_start_game"]
+[connection signal="body_entered" from="PlayerGoal" to="." method="_on_PlayerGoal_body_entered"]
+[connection signal="body_entered" from="EnemyGoal" to="." method="_on_EnemyGoal_body_entered"]
